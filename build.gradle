@@ -1,0 +1,48 @@
+plugins {
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id("io.gitlab.arturbosch.detekt").version("1.13.1")
+}
+
+group 'su.bohr'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+application {
+    mainClass = 'su.bohr.kronstadt.MainKt'
+}
+
+detekt {
+    toolVersion = "1.13.1"
+    config = files("config/detekt/detekt.yml")
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "com.sparkjava:spark-kotlin:1.0.0-alpha"
+    implementation 'org.slf4j:slf4j-simple:2.0.0-alpha1'
+
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:2.0.13"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:1.3.72"
+    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:2.0.13"
+    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
+
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.13.1"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'spek2'
+    }
+}
